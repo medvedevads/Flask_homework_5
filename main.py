@@ -42,24 +42,25 @@ async def get_users(request: Request):
                                                      "users": users})
 
 @app.post('/user/')
-async def creat_user(user: User):
+async def create_user(user: User):
+    user.id_ = len(users) + 1  # Генерация уникального id для нового пользователя
     users.append(user)
     return user
-
 
 @app.put('/user/{id_}')
 async def update_user(id_: int, user: User):
     for i in range(len(users)):
         if users[i].id_ == id_:
             users[i] = user
+            break
     return {'id_': id_, 'user': user}
-
 
 @app.delete('/user/{id_}')
 async def delete_user(id_: int):
-    for us in users:
-        if us.id_ == id_:
-            users.remove(us)
+    for user in users:
+        if user.id_ == id_:
+            users.remove(user)
+            break
     return {'id_': id_}
 
 
